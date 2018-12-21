@@ -1,7 +1,7 @@
 [default]
 access_key = {{ s3_access_key }}
 secret_key = {{ s3_secret_key }}
-gpg_passphrase = {{ s3_gpg_passphrase }}
+gpg_passphrase = {{ s3_gpg_passphrase|default() }}
 access_token =
 host_base = {{ s3_endpoint }}
 host_bucket = {{ s3_host_bucket }}
