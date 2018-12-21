@@ -1,0 +1,40 @@
+---
+- name: Ensure pip3 has been installed
+  apt:
+    name: python3-pip
+    state: present
+
+- name: S3cmd
+  block:
+  - name: "S3cmd - Install package"
+    pip:
+      name: s3cmd
+      state: present
+  - name: "S3cmd - Consigure credentials"
+    template:
+      src: s3cfg.j2
+      dest: /root/.s3cfg
+      mode: 0600
+      backup: yes
+      
+  when:
+  - s3_access_key is defined
+  - s3_secret_key is defined
+
+- name: Deploy database backup script
+  template:
+    src: backup-db.sh
+    dest: /usr/local/bin/backup-db
+    mode: 0755
+  when:
+  - services["mysql"] is defined
+  - backup_db_script == true
+
+- name: Deploy files backup script
+  template:
+    src: backup-fs.sh
+    dest: /usr/local/bin/backup-fs
+    mode: 0755
+  when:
+  - backup_fs_script == true
+

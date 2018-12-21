@@ -1,0 +1,11 @@
+---
+backup_db_script: true
+backup_fs_script: true
+
+#s3_access_key: CHANGE_ME
+#s3_secret_key: CHANGE_ME
+#s3_endpoint: CHANGE_ME
+# Secured transfer
+#s3_gpg_passphrase: ENCRYPTED_GPG_KEY
+s3_host_bucket: "%(bucket)s.{{ s3_endpoint }}"
+s3_bucket_location: US
