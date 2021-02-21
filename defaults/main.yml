@@ -5,8 +5,8 @@ backup_fs_script: true
 
 s3_sync:
 - name: Databases
-  backup_dir: /data/backups
-  bucket_path: "s3://test2delete/{{ ansible_fqdn }}"
+  src: /data/backups/
+  dest: "s3://test2delete/{{ ansible_fqdn }}/"
 
 #s3_access_key: CHANGE_ME
 #s3_secret_key: CHANGE_ME

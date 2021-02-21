@@ -2,5 +2,5 @@
 
 {% for c in s3_sync %}
 # {{ c.name }}
-s3cmd sync {{ c.backup_dir }} {{ c.bucket_path }} {{ c.opts|default("") }}
+s3cmd sync ${1} {{ c.src }} {{ c.dest }} {{ c.opts|default("") }}
 {% endfor %}
