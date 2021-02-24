@@ -18,7 +18,7 @@
       backup: yes
   - name: "S3cmd - Ensure existence of directory"
     file:
-      path: "{{ item.backup_dir }}"
+      path: "{{ item.src }}"
       state: directory
       recurse: true
     with_items: "{{ s3_sync }}"
@@ -27,11 +27,12 @@
       src: s3sync.j2
       dest: /usr/local/bin/s3sync
       mode: 0755
-  - name: "S3cmd - Check script"
-    command: "/usr/local/bin/s3cmd --dry-run"
-    register: s3_test
-  - debug:
-      msg: "{{ s3_test.stdout }}"
+# Does not work more
+#  - name: "S3cmd - Check script"
+#    command: "/usr/local/bin/s3cmd --dry-run"
+#    register: s3_test
+#  - debug:
+#      msg: "{{ s3_test.stdout }}"
 
   when:
   - s3_access_key is defined
