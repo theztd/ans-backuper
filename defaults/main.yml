@@ -5,8 +5,13 @@ backup_fs_script: true
 
 s3_sync:
 - name: Databases
-  src: /data/backups/
+  src: /home/backups/db/
   dest: "s3://test2delete/{{ ansible_fqdn }}/"
+  hour: "*/6"
+  minute: "55"
+  day: "*"
+  month: "*"
+  weekday: "*"
 
 #s3_access_key: CHANGE_ME
 #s3_secret_key: CHANGE_ME
