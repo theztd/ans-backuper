@@ -3,11 +3,17 @@ access_key = {{ s3_access_key }}
 secret_key = {{ s3_secret_key }}
 gpg_passphrase = {{ s3_gpg_passphrase|default() }}
 access_token =
+{% if s3_endpoint is defined %}
 host_base = {{ s3_endpoint }}
+{% endif %}
+{% if s3_host_bucket is defined  %}
 host_bucket = {{ s3_host_bucket }}
+{% endif %}
 add_encoding_exts =
 add_headers =
+{% if s3_bucket_location is defined %}
 bucket_location = {{ s3_bucket_location }}
+{% endif %}
 ca_certs_file =
 cache_file =
 check_ssl_certificate = True
