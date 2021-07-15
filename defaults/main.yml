@@ -1,17 +1,11 @@
 ---
-backup_db_script: true
-backuper_db_dir: /home/backups/db
-backup_fs_script: true
-
-s3_sync:
-- name: Databases
-  src: /home/backups/db/
-  dest: "s3://test2delete/{{ ansible_fqdn }}/"
-  hour: "*/6"
-  minute: "55"
-  day: "*"
-  month: "*"
-  weekday: "*"
+s3_backup_jobs:
+- name: opt-test
+  src: /opt/test
+  dest: test
+  storage_class: STANDARD_IA
+  bucket: 4h-backup-vultr-prod
+  on_calendar: "*-*-* *:*:30"
 
 # s3_access_key: CHANGE_ME
 # s3_secret_key: CHANGE_ME
@@ -19,4 +13,4 @@ s3_sync:
 # Secured transfer
 # s3_gpg_passphrase: ENCRYPTED_GPG_KEY
 # s3_host_bucket: "%(bucket)s.{{ s3_endpoint }}"
-s3_bucket_location: US
+# s3_bucket_location: US

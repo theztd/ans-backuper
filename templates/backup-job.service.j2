@@ -1,6 +1,6 @@
 # Managed by Ansible (role ans-backuper)
 [Unit]
-Description=A backup job {{ job_name }}
+Description=A backup job {{ item.name }}
 
 
 [Service]
@@ -14,17 +14,17 @@ TimeoutSec=900
 # Start run and prepare env
 Environment="S3_ACCESS_KEY={{ s3_access_key }}"
 Environment="S3_SECRET_KEY={{ s3_secret_key }}"
-ExecStartPre=/bin/bash -c 'echo "backup_running{job_name=\\"{{ job_name }}\\"} 1" > /tmp/metrics/backup_{{ job_name }}_running.prom'
+ExecStartPre=/bin/bash -c 'echo "backup_running{name=\\"{{ item.name }}\\"} 1" > /tmp/metrics/backup_{{ item.name }}_running.prom'
 ExecStartPre=/bin/bash -c "/bin/systemctl set-environment DATE=$(date +%%F-%%H%%M)"
 
 # Backup
 ExecStart=/bin/bash -c '\
-    /usr/bin/s4cmd sync -r {{ src }} {{ backup_bucket }}/{{ ansible_hostname }}/${DATE}/{{ dest }} --API-StorageClass=STANDARD_IA ;\
-    echo "backup_status{job_name=\\"{{ job_name }}\\"} $?" > /tmp/metrics/backup_{{ job_name }}_status.prom \
+    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.bucket }}/{{ ansible_hostname }}/${DATE}/{{ item.dest }} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
+    echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
     '
 
 # After run script
-ExecStartPost=/bin/bash -c 'echo "backup_running{job_name=\\"{{ job_name }}\\"} 0" > /tmp/metrics/backup_{{ job_name }}_running.prom'
+ExecStartPost=/bin/bash -c 'echo "backup_running{name=\\"{{ item.name }}\\"} 0" > /tmp/metrics/backup_{{ item.name }}_running.prom'
 
 
 [Install]

@@ -1,5 +1,5 @@
 [Unit]
-Description=Scheduler for job {{ job_name }}
+Description=Scheduler for job {{ item.name }}
 RefuseManualStart=no  # Allow manual starts
 RefuseManualStop=no   # Allow manual stops
 
@@ -11,10 +11,10 @@ Persistent=true
 OnBootSec=3600
 
 # Schedule time
-OnCalendar=*-*-* *:*:30
+OnCalendar={{ item.on_calendar }}
 
 #File describing job to execute
-Unit={{ job_name }}.service
+Unit={{ item.name }}.service
 
 [Install]
 WantedBy=timers.target

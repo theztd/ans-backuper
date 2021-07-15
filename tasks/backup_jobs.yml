@@ -1,0 +1,11 @@
+- name: "Generate {{ item.name }} job"
+  template:
+    src: backup-job.service.j2
+    dest: "/lib/systemd/system/{{ item.name }}.service"
+
+- name: "Generate {{ item.name }} timer"
+  template:
+    src: backup-job.timer.j2
+    dest: "/lib/systemd/system/{{ item.name }}.timer"
+
+
