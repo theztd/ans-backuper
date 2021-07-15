@@ -4,25 +4,28 @@
     name: python3-pip
     state: present
 
-- name: S3cmd
+- name: S4cmd
   block:
-  - name: "S3cmd - Install package"
+  - name: "S4cmd - Install package"
     pip:
-      name: s3cmd
+      name: s4cmd
       state: present
-  - name: "S3cmd - Consigure credentials"
+
+  - name: "S4cmd - Consigure credentials"
     template:
       src: s3cfg.j2
       dest: /root/.s3cfg
       mode: 0600
       backup: yes
-  - name: "S3cmd - Ensure existence of directory"
+
+  - name: "S4cmd - Ensure existence of directory"
     file:
       path: "{{ item.src }}"
       state: directory
       recurse: true
     with_items: "{{ s3_sync }}"
-  - name: "S3cmd - Generate sync script"
+
+  - name: "S4cmd - Generate sync script"
     template:
       src: s3sync.j2
       dest: /usr/local/bin/s3sync

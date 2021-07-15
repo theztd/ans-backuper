@@ -1,0 +1,20 @@
+[Unit]
+Description=Scheduler for job {{ job_name }}
+RefuseManualStart=no  # Allow manual starts
+RefuseManualStop=no   # Allow manual stops
+
+[Timer]
+#Execute job if it missed a run due to machine being off
+Persistent=true
+
+#Run 1h after boot for the first time
+OnBootSec=3600
+
+# Schedule time
+OnCalendar=*-*-* *:*:30
+
+#File describing job to execute
+Unit={{ job_name }}.service
+
+[Install]
+WantedBy=timers.target
