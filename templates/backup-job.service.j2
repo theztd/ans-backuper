@@ -17,11 +17,18 @@ Environment="S3_SECRET_KEY={{ s3_secret_key }}"
 ExecStartPre=/bin/bash -c 'echo "backup_running{name=\\"{{ item.name }}\\"} 1" > /tmp/metrics/backup_{{ item.name }}_running.prom'
 ExecStartPre=/bin/bash -c "/bin/systemctl set-environment DATE=$(date +%%F-%%H%%M)"
 
-# Backup
+
+# Backup s3cmd (supports exclude)
 ExecStart=/bin/bash -c '\
-    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% end for -%} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
+    /usr/bin/s3cmd sync {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% endfor -%} --storage-class={{ item.storage_class | default("STANDARD_IA") }} ;\
     echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
     '
+
+# Backup s4cmd
+#ExecStart=/bin/bash -c '\
+#    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% endfor -%} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
+#    echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
+#    '
 
 # After run script
 ExecStartPost=/bin/bash -c 'echo "backup_running{name=\\"{{ item.name }}\\"} 0" > /tmp/metrics/backup_{{ item.name }}_running.prom'
