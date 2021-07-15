@@ -19,7 +19,7 @@ ExecStartPre=/bin/bash -c "/bin/systemctl set-environment DATE=$(date +%%F-%%H%%
 
 # Backup
 ExecStart=/bin/bash -c '\
-    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.bucket }}/{{ ansible_hostname }}/${DATE}/{{ item.dest }} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
+    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% end for -%} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
     echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
     '
 

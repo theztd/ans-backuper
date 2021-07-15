@@ -8,4 +8,10 @@
     src: backup-job.timer.j2
     dest: "/lib/systemd/system/{{ item.name }}.timer"
 
+- name: "Enable {{ item.name }} timer"
+  systemd:
+    name: "{{ item.name }}.service"
+    daemon_reload: true
+#    state: started
+    enabled: true  
 
