@@ -1,6 +1,6 @@
 ---
 - block:
-  - name: "Sscmd - Install package"
+  - name: "S3cmd - Install package"
     pip:
       name: s3cmd
       state: present 
