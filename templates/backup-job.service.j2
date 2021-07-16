@@ -20,7 +20,7 @@ ExecStartPre=/bin/bash -c "/bin/systemctl set-environment DATE=$(date +%%F-%%H%%
 
 # Backup s3cmd (supports exclude)
 ExecStart=/bin/bash -c '\
-    /usr/local/bin/s3cmd sync {{ item.src }} {{ item.dest }} 
+    /usr/local/bin/s3cmd sync {{ item.src }} {{ item.dest }} \
 {% if item.opts %}
 {% for opt in item.opts %}
       {{ opt }} \

@@ -1,11 +1,11 @@
 ---
 - block:
-  - name: "S4cmd - Install package"
-    apt:
-      name: s4cmd
-      state: present
+  - name: "Sscmd - Install package"
+    pip:
+      name: s3cmd
+      state: present 
 
-  - name: "S4cmd - Consigure credentials"
+  - name: "S3cmd - Consigure credentials"
     template:
       src: s3cfg.j2
       dest: /root/.s3cfg
