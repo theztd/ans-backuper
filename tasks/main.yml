@@ -5,7 +5,7 @@
       name: s3cmd
       state: present 
 
-  - name: "S3cmd - Consigure credentials"
+  - name: "S3cmd - Configure credentials"
     template:
       src: s3cfg.j2
       dest: /root/.s3cfg
