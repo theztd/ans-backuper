@@ -20,7 +20,13 @@ ExecStartPre=/bin/bash -c "/bin/systemctl set-environment DATE=$(date +%%F-%%H%%
 
 # Backup s3cmd (supports exclude)
 ExecStart=/bin/bash -c '\
-    /usr/bin/s3cmd sync {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% endfor -%} --storage-class={{ item.storage_class | default("STANDARD_IA") }} ;\
+    /usr/local/bin/s3cmd sync {{ item.src }} {{ item.dest }} 
+{% if item.opts %}
+{% for opt in item.opts %}
+      {{ opt }} \
+{% endfor %}
+{% endif %} 
+      --storage-class={{ item.storage_class | default("STANDARD_IA") }} ;\
     echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
     '
 

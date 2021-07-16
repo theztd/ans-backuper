@@ -10,8 +10,8 @@
 
 - name: "Enable {{ item.name }} timer"
   systemd:
-    name: "{{ item.name }}.service"
+    name: "{{ item.name }}.timer"
     daemon_reload: true
 #    state: started
-    enabled: true  
+    enabled: true
 
