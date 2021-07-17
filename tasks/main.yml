@@ -3,7 +3,8 @@
   - name: "S3cmd - Install package"
     pip:
       name: s3cmd
-      state: present 
+      state: present
+      executable: pip3
 
   - name: "S3cmd - Configure credentials"
     template:
