@@ -9,7 +9,8 @@ Type=oneshot
 # Kill the job asap, when there is not enought resources
 OOMScoreAdjust=-200
 
-TimeoutSec=900
+# 90m timeout
+TimeoutSec=5400
 
 # Start run and prepare env
 Environment="S3_ACCESS_KEY={{ s3_access_key }}"
