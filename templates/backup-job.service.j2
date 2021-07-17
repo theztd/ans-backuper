@@ -30,14 +30,9 @@ ExecStart=/bin/bash -c '\
     echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
     '
 
-# Backup s4cmd
-#ExecStart=/bin/bash -c '\
-#    /usr/bin/s4cmd sync -r {{ item.src }} {{ item.dest }} {% for opt in item.opts -%}{{ opt }} {% endfor -%} --API-StorageClass={{ item.storage_class | default("STANDARD_IA") }} ;\
-#    echo "backup_status{name=\\"{{ item.name }}\\"} $?" > /tmp/metrics/backup_{{ item.name }}_status.prom \
-#    '
-
 # After run script
 ExecStartPost=/bin/bash -c 'echo "backup_running{name=\\"{{ item.name }}\\"} 0" > /tmp/metrics/backup_{{ item.name }}_running.prom'
+# /usr/local/bin/s3cmd du {{ item.dest }} | awk \'{ printf "backup_size_{name=\\"{{ item.name }}\\"} " $1 "\nbackup_files_count{name=\\"{{ item.name }}\\"} " $2 "\n"}\' >> /tmp/metrics/backup_{{ item.name }}_status.prom 
 
 
 [Install]
